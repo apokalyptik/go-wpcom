@@ -45,7 +45,7 @@ func (r *SiteResponse) Private() (bool, error) {
 	return softBool(r.PrivateBool)
 }
 
-func (c *client) Site(site interface{}) (SiteResponse, error) {
+func (c *Client) Site(site interface{}) (SiteResponse, error) {
 	var suffix string
 	var resp SiteResponse
 	switch t := site.(type) {

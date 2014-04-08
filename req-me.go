@@ -25,7 +25,7 @@ func (r *MeResponse) Verified() (bool, error) {
 	return softBool(r.VerifiedBool)
 }
 
-func (c *client) Me() (MeResponse, error) {
+func (c *Client) Me() (MeResponse, error) {
 	var resp MeResponse
 	js, err := c.fetch("me")
 	resp.Raw = string(js)

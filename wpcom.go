@@ -14,7 +14,7 @@ import (
 
 const PREFIX = "https://public-api.wordpress.com/rest/v1/"
 
-type client struct {
+type Client struct {
 	httpClient *http.Client
 	prefix     string
 	token      string
@@ -24,7 +24,7 @@ type client struct {
 // Set the URL Prefix for the API client. This should normally not change unless you are
 // an Automattic developer with a WordPress.com development environment testing changes.
 // This option should *never* be overridden outside this specific circumstance
-func (c *client) Prefix(prefix string) {
+func (c *Client) Prefix(prefix string) {
 	c.prefix = prefix
 }
 
@@ -32,7 +32,7 @@ func (c *client) Prefix(prefix string) {
 // default, however, for Automattic developers with test environments the cert hostname
 // does not match the request hostname. This function can be used to tell the client that
 // This is OK. This option should *never* be disabled outside this specific circumstance
-func (c *client) InsecureSkipVerify(want bool) {
+func (c *Client) InsecureSkipVerify(want bool) {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: want},
 	}
@@ -41,11 +41,11 @@ func (c *client) InsecureSkipVerify(want bool) {
 
 // Turn debugging on or off.  When set to true request and response information will be
 // logged using log.Printf()
-func (c *client) Debug(debug bool) {
+func (c *Client) Debug(debug bool) {
 	c.debug = debug
 }
 
-func (c *client) fetch(suffix string) (js []byte, err error) {
+func (c *Client) fetch(suffix string) (js []byte, err error) {
 	url := fmt.Sprintf("%s%s", c.prefix, suffix)
 	req, err := http.NewRequest("GET", url, nil)
 	req.Host = "public-api.wordpress.com"
@@ -90,14 +90,14 @@ func softBool(input interface{}) (bool, error) {
 	}
 }
 
-func (c *client) read(js []byte, into interface{}) error {
+func (c *Client) read(js []byte, into interface{}) error {
 	return json.Unmarshal(js, into)
 }
 
 // Generate a new WordPress.com REST API Client given an access token. See:
 // https://developer.wordpress.com/docs/oauth2/
-func New(access_token string) *client {
-	client := new(client)
+func New(access_token string) *Client {
+	client := new(Client)
 	client.prefix = PREFIX
 	client.InsecureSkipVerify(false)
 	client.token = access_token
