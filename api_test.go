@@ -112,10 +112,20 @@ func TestMe(t *testing.T) {
 }
 
 func TestNotifications(t *testing.T) {
-	// not done yet
 	c := getTestClient()
-	_, e := c.Notifications(Options{}.Add("number", "3").Add("ids", "1118447366").Add("ids", "1120655349"))
+	r, e := c.Notifications(Options{}.Add("number", "3"))
 	if e != nil {
 		t.Errorf("Expected nil error, got: %s", e.Error())
+	}
+	if r.Number != 3 {
+		t.Errorf("Got %d notes, expected 3", r.Number)
+	}
+	r2, e2 := c.Notifications(
+		Options{}.Add("ids[]", r.Notifications[1].ID).Add("ids[]", r.Notifications[2].ID))
+	if e2 != nil {
+		log.Printf("Expected no error, got: %s", e2.Error())
+	}
+	if r2.Number != 2 {
+		t.Errorf("Got %d notes, expected 2", r2.Number)
 	}
 }
