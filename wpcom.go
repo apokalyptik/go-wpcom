@@ -5,7 +5,6 @@ package wpcom
 import (
 	"crypto/tls"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -67,27 +66,6 @@ func (c *Client) fetch(suffix string) (js []byte, err error) {
 		log.Printf("Response Text: %+v\n\nError: %+v", string(js), err)
 	}
 	return js, err
-}
-
-func softBool(input interface{}) (bool, error) {
-	switch t := input.(type) {
-	case int:
-		if t < 1 {
-			return false, nil
-		}
-		return true, nil
-	case bool:
-		return t, nil
-	case string:
-		if t == "" {
-			return false, nil
-		}
-		return true, nil
-	default:
-		log.Printf("", input)
-		return false, errors.New("Unhandled soft boolean type")
-
-	}
 }
 
 func (c *Client) read(js []byte, into interface{}) error {

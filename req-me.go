@@ -1,7 +1,5 @@
 package wpcom
 
-import "errors"
-
 type MeResponse struct {
 	ID           int                    `json:"ID"`
 	DisplayName  string                 `json:"display_name"`
@@ -11,18 +9,11 @@ type MeResponse struct {
 	TokenSiteID  int                    `json:"token_site_id"`
 	Avatar       string                 `json:"avatar_URL"`
 	Profile      string                 `json:"profile_URL"`
-	VerifiedBool bool                   `json:"verified"`
+	Verified     bool                   `json:"verified"`
 	Meta         map[string]interface{} `json:"meta"`
 	Error        string                 `json:"error"`
 	ErrorMessage string                 `json:"message"`
 	Raw          string                 `json:"-"`
-}
-
-func (r *MeResponse) Verified() (bool, error) {
-	if r.Error != "" {
-		return false, errors.New(r.Error)
-	}
-	return softBool(r.VerifiedBool)
 }
 
 func (c *Client) Me() (MeResponse, error) {
