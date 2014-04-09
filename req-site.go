@@ -15,10 +15,10 @@ type SiteResponse struct {
 	Meta         map[string]interface{} `json:"meta"`
 	Error        string                 `json:"error"`
 	ErrorMessage string                 `json:"message"`
-	Raw          string                 `json:"-"`
-	Jetpack      interface{}            `json:"jetpack"`
-	Private      interface{}            `json:"is_private"`
-	Following    interface{}            `json:"is_following"`
+	Jetpack      bool                   `json:"jetpack"`
+	Private      bool                   `json:"is_private"`
+	Following    bool                   `json:"is_following"`
+	raw          string                 `json:"-"`
 }
 
 func (c *Client) Site(site interface{}) (SiteResponse, error) {
@@ -34,7 +34,7 @@ func (c *Client) Site(site interface{}) (SiteResponse, error) {
 	if err != nil {
 		return resp, err
 	}
-	resp.Raw = string(js)
+	resp.raw = string(js)
 	err = c.read(js, &resp)
 	return resp, err
 }

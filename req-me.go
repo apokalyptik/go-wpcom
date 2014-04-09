@@ -13,13 +13,13 @@ type MeResponse struct {
 	Meta         map[string]interface{} `json:"meta"`
 	Error        string                 `json:"error"`
 	ErrorMessage string                 `json:"message"`
-	Raw          string                 `json:"-"`
+	raw          string                 `json:"-"`
 }
 
 func (c *Client) Me() (MeResponse, error) {
 	var resp MeResponse
 	js, err := c.fetch("me")
-	resp.Raw = string(js)
+	resp.raw = string(js)
 	err = c.read(js, &resp)
 	return resp, err
 }
