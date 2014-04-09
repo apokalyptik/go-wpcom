@@ -1,48 +1,24 @@
 package wpcom
 
-import (
-	"errors"
-	"fmt"
-)
+import "fmt"
 
 type SiteResponse struct {
-	ID            int                    `json:"ID"`
-	Name          string                 `json:"name"`
-	Description   string                 `json:"description"`
-	URL           string                 `json:"URL"`
-	Posts         int                    `json:"post_count"`
-	Subscribers   int                    `json:"subscribers_count"`
-	Lang          string                 `json:"lang"`
-	Visible       string                 `json:"visible"`
-	Options       map[string]interface{} `json:"options"`
-	Meta          map[string]interface{} `json:"meta"`
-	Error         string                 `json:"error"`
-	ErrorMessage  string                 `json:"message"`
-	Raw           string                 `json:"-"`
-	JetpackBool   interface{}            `json:"jetpack"`
-	PrivateBool   interface{}            `json:"is_private"`
-	FollowingBool interface{}            `json:"is_following"`
-}
-
-func (r *SiteResponse) Following() (bool, error) {
-	if r.Error != "" {
-		return false, errors.New(r.Error)
-	}
-	return softBool(r.FollowingBool)
-}
-
-func (r *SiteResponse) Jetpack() (bool, error) {
-	if r.Error != "" {
-		return false, errors.New(r.Error)
-	}
-	return softBool(r.JetpackBool)
-}
-
-func (r *SiteResponse) Private() (bool, error) {
-	if r.Error != "" {
-		return false, errors.New(r.Error)
-	}
-	return softBool(r.PrivateBool)
+	ID           int                    `json:"ID"`
+	Name         string                 `json:"name"`
+	Description  string                 `json:"description"`
+	URL          string                 `json:"URL"`
+	Posts        int                    `json:"post_count"`
+	Subscribers  int                    `json:"subscribers_count"`
+	Lang         string                 `json:"lang"`
+	Visible      string                 `json:"visible"`
+	Options      map[string]interface{} `json:"options"`
+	Meta         map[string]interface{} `json:"meta"`
+	Error        string                 `json:"error"`
+	ErrorMessage string                 `json:"message"`
+	Raw          string                 `json:"-"`
+	Jetpack      interface{}            `json:"jetpack"`
+	Private      interface{}            `json:"is_private"`
+	Following    interface{}            `json:"is_following"`
 }
 
 func (c *Client) Site(site interface{}) (SiteResponse, error) {
