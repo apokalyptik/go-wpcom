@@ -18,7 +18,7 @@ type MeResponse struct {
 
 func (c *Client) Me() (MeResponse, error) {
 	var resp MeResponse
-	js, err := c.fetch("me")
+	js, err := c.fetch("me", Options{})
 	resp.raw = string(js)
 	err = c.read(js, &resp)
 	return resp, err

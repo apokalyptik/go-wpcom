@@ -30,7 +30,7 @@ func (c *Client) Site(site interface{}) (SiteResponse, error) {
 	case int:
 		suffix = fmt.Sprintf("sites/%d", t)
 	}
-	js, err := c.fetch(suffix)
+	js, err := c.fetch(suffix, Options{})
 	if err != nil {
 		return resp, err
 	}

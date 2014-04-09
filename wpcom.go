@@ -44,8 +44,13 @@ func (c *Client) Debug(debug bool) {
 	c.debug = debug
 }
 
-func (c *Client) fetch(suffix string) (js []byte, err error) {
-	url := fmt.Sprintf("%s%s", c.prefix, suffix)
+func (c *Client) fetch(suffix string, opt Options) (js []byte, err error) {
+	var url string
+	if getParams := opt.Encode(); getParams != "" {
+		url = fmt.Sprintf("%s%s?%s", c.prefix, suffix, getParams)
+	} else {
+		url = fmt.Sprintf("%s%s", c.prefix, suffix)
+	}
 	req, err := http.NewRequest("GET", url, nil)
 	req.Host = "public-api.wordpress.com"
 	if c.token != "" {
