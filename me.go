@@ -1,6 +1,7 @@
 package wpcom
 
-type MeResponse struct {
+type Me struct {
+	client       *Client
 	ID           int                    `json:"ID"`
 	DisplayName  string                 `json:"display_name"`
 	Username     string                 `json:"username"`
@@ -16,10 +17,12 @@ type MeResponse struct {
 	raw          string                 `json:"-"`
 }
 
-func (c *Client) Me() (MeResponse, error) {
-	var resp MeResponse
-	js, err := c.fetch("me", Options{})
-	resp.raw = string(js)
-	err = c.read(js, &resp)
-	return resp, err
+func (m *Me) Get() error {
+	js, err := m.client.fetch("me", Options{})
+	if err != nil {
+		return err
+	}
+	m.raw = string(js)
+	err = m.client.read(js, &m)
+	return err
 }

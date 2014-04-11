@@ -47,70 +47,77 @@ func getTestAnonymousClient() *Client {
 	return configTestClient(New(""))
 }
 
-func TestSiteByString(t *testing.T) {
-	c := getTestAnonymousClient()
-	r, e := c.Site("blog.apokalyptik.com")
-	if e != nil {
-		t.Errorf("Expected nil error, got: %s", e.Error())
-	}
-	if r.ID != 20645179 {
-		t.Errorf("Got site ID %s, expected 20645179", r.ID)
-	}
-	if r.Jetpack != true {
-		t.Errorf("Expected site to be a jetpack site")
-	}
-	if r.Private != false {
-		t.Errorf("Expected site to be public")
-	}
-}
-
-func TestSiteById(t *testing.T) {
-	c := getTestAnonymousClient()
-	r, e := c.Site(448698)
-	if e != nil {
-		t.Errorf("Expected nil error, got: %s", e.Error())
-	}
-	if r.ID != 448698 {
-		t.Errorf("Expected")
-	}
-}
-
-func TestBadSiteNotWp(t *testing.T) {
-	c := getTestAnonymousClient()
-	r, e := c.Site("amazon.com")
-	if e != nil {
-		t.Errorf("Expected nil error, got: %s", e.Error())
-	}
-	if r.Error != "unknown_blog" {
-		t.Errorf("Expected Error: unknown_blog for amazon.com")
-	}
-}
-
-func TestBadSiteInvalidId(t *testing.T) {
-	c := getTestAnonymousClient()
-	r, e := c.Site(-100)
-	if e != nil {
-		t.Errorf("Expexted nil error, got: %s", e.Error())
-	}
-	if r.Error != "unknown_blog" {
-		t.Errorf("Expected Error: unknown_blog for site -100")
-	}
-}
-
 func TestMe(t *testing.T) {
 	c := getTestClient()
-	r, e := c.Me()
-	if e != nil {
-		t.Errorf("Expected nil error, got %s", e.Error())
+	me, err := c.Me()
+	if err != nil {
+		t.Errorf("got error: %s", err)
 	}
-	if r.Username != "apokalyptik" {
-		t.Errorf("Expected Username 'apokalyptik', got '%s'", r.Username)
+	id, err := testconf.GetInt("user", "userid")
+	if err != nil {
+		t.Errorf("got error: %s", err)
 	}
-	if r.Verified != true {
-		t.Errorf("Expected verified user")
+	if me.ID != id {
+		t.Errorf("Expected ID of %d, got %d", id, me.ID)
 	}
 }
 
+func TestAnonMe(t *testing.T) {
+	c := getTestAnonymousClient()
+	me, err := c.Me()
+	if err != nil {
+		t.Errorf("got error: %s", err)
+	}
+	if me.ID != 0 {
+		t.Errorf("Expected ID of 0, got %d", me.ID)
+	}
+}
+
+func TestSiteString(t *testing.T) {
+	c := getTestAnonymousClient()
+	site, err := c.SiteByString("blog.apokalyptik.com")
+	if err != nil {
+		t.Errorf("got error: %s", err)
+	}
+	if site.ID != 20645179 {
+		t.Errorf("Expected ID of 20645179, got %d", site.ID)
+	}
+}
+
+func TestSiteBadString(t *testing.T) {
+	c := getTestAnonymousClient()
+	site, err := c.SiteByString("amazon.com")
+	if err != nil {
+		t.Errorf("got error: %s", err)
+	}
+	if site.ID != 0 {
+		t.Errorf("Expected ID of 20645179, got %d", site.ID)
+	}
+}
+
+func TestWpcomSiteId(t *testing.T) {
+	c := getTestAnonymousClient()
+	site, err := c.SiteById(448698)
+	if err != nil {
+		t.Errorf("got error: %s", err)
+	}
+	if site.ID != 448698 {
+		t.Errorf("Expected ID of 448698, got %d", site.ID)
+	}
+}
+
+func TestWpcomSiteBadId(t *testing.T) {
+	c := getTestAnonymousClient()
+	site, err := c.SiteById(-1)
+	if err != nil {
+		t.Errorf("got error: %s", err)
+	}
+	if site.ID != 0 {
+		t.Errorf("Expected ID of 0, got %d", site.ID)
+	}
+}
+
+/*
 func TestNotifications(t *testing.T) {
 	c := getTestClient()
 	r, e := c.Notifications(Options{}.Add("number", "3"))
@@ -129,3 +136,4 @@ func TestNotifications(t *testing.T) {
 		t.Errorf("Got %d notes, expected 2", r2.Number)
 	}
 }
+*/

@@ -1,8 +1,8 @@
 package wpcom
 
-import "fmt"
-
-type SiteResponse struct {
+// A site object to act upon
+type Site struct {
+	client       *Client
 	ID           int                    `json:"ID"`
 	Name         string                 `json:"name"`
 	Description  string                 `json:"description"`
@@ -21,20 +21,21 @@ type SiteResponse struct {
 	raw          string                 `json:"-"`
 }
 
-func (c *Client) Site(site interface{}) (SiteResponse, error) {
-	var suffix string
-	var resp SiteResponse
-	switch t := site.(type) {
-	case string:
-		suffix = fmt.Sprintf("sites/%s", t)
-	case int:
-		suffix = fmt.Sprintf("sites/%d", t)
-	}
-	js, err := c.fetch(suffix, Options{})
-	if err != nil {
-		return resp, err
-	}
-	resp.raw = string(js)
-	err = c.read(js, &resp)
-	return resp, err
+// Get a site struct
+func NewSite() {
 }
+
+// Get details about the site
+func (s *Site) Info() {
+}
+
+// List recent posts
+func (s *Site) GetPosts() {
+}
+
+// Get a specific post
+func (s *Site) GetPost() {
+}
+
+// Make a new post
+func (s *Site) Post() {}
