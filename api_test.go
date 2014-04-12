@@ -146,3 +146,24 @@ func TestNotes(t *testing.T) {
 		t.Errorf("Expected notes.Number of 3, got %d", notes.Number)
 	}
 }
+
+func TestNote(t *testing.T) {
+	c := getTestClient()
+	me, err := c.Me()
+	note, err := me.Notification(1131732529)
+	if err != nil {
+		t.Errorf("got error: %s", err)
+	}
+	if note.ID != 1131732529 {
+		t.Errorf("Expected note.ID 1131732529, got %d", note.ID)
+	}
+}
+
+func TestMissingNote(t *testing.T) {
+	c := getTestClient()
+	me, err := c.Me()
+	note, err := me.Notification(-1)
+	if err == nil {
+		t.Errorf("Expected error, got %+v", note)
+	}
+}

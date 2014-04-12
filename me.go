@@ -1,5 +1,10 @@
 package wpcom
 
+import (
+	"errors"
+	"fmt"
+)
+
 type Me struct {
 	client       *Client
 	ID           int                    `json:"ID"`
@@ -34,4 +39,19 @@ func (m *Me) Notifications(opt Options) (NotificationsResponse, error) {
 	err = m.client.read(js, &rval)
 	rval.unhack()
 	return rval, err
+}
+
+func (m *Me) Notification(id int64) (Notification, error) {
+	rval := NotificationsResponse{}
+	js, err := m.client.fetch(fmt.Sprintf("notifications/%d", id), Options{})
+	if err != nil {
+		return Notification{}, err
+	}
+	err = m.client.read(js, &rval)
+	rval.unhack()
+	if rval.Number > 0 {
+		return rval.Notifications[0], err
+	} else {
+		return Notification{}, errors.New("not found")
+	}
 }
