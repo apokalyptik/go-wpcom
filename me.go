@@ -14,7 +14,6 @@ type Me struct {
 	Meta         map[string]interface{} `json:"meta"`
 	Error        string                 `json:"error"`
 	ErrorMessage string                 `json:"message"`
-	raw          string                 `json:"-"`
 }
 
 func (m *Me) Get() error {
@@ -22,7 +21,17 @@ func (m *Me) Get() error {
 	if err != nil {
 		return err
 	}
-	m.raw = string(js)
 	err = m.client.read(js, &m)
 	return err
+}
+
+func (m *Me) Notifications(opt Options) (NotificationsResponse, error) {
+	rval := NotificationsResponse{}
+	js, err := m.client.fetch("notifications/", opt)
+	if err != nil {
+		return rval, err
+	}
+	err = m.client.read(js, &rval)
+	rval.unhack()
+	return rval, err
 }

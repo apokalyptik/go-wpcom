@@ -117,23 +117,32 @@ func TestWpcomSiteBadId(t *testing.T) {
 	}
 }
 
-/*
-func TestNotifications(t *testing.T) {
-	c := getTestClient()
-	r, e := c.Notifications(Options{}.Add("number", "3"))
-	if e != nil {
-		t.Errorf("Expected nil error, got: %s", e.Error())
+func TestAnonNotes(t *testing.T) {
+	c := getTestAnonymousClient()
+	me, err := c.Me()
+	notes, err := me.Notifications(Options{})
+	if err != nil {
+		t.Errorf("got error: %s", err)
 	}
-	if r.Number != 3 {
-		t.Errorf("Got %d notes, expected 3", r.Number)
+	if notes.LastSeen != 0 {
+		t.Errorf("Expected notes.LastSeen of 0, got %d", notes.LastSeen)
 	}
-	r2, e2 := c.Notifications(
-		Options{}.Add("ids[]", r.Notifications[1].ID).Add("ids[]", r.Notifications[2].ID))
-	if e2 != nil {
-		log.Printf("Expected no error, got: %s", e2.Error())
-	}
-	if r2.Number != 2 {
-		t.Errorf("Got %d notes, expected 2", r2.Number)
+	if notes.Number != 0 {
+		t.Errorf("Expected notes.Number of 0, got %d", notes.Number)
 	}
 }
-*/
+
+func TestNotes(t *testing.T) {
+	c := getTestClient()
+	me, err := c.Me()
+	notes, err := me.Notifications(Options{}.Add("number", 3).Add("pretty", true))
+	if err != nil {
+		t.Errorf("got error: %s", err)
+	}
+	if notes.LastSeen == 0 {
+		t.Errorf("Expected notes.LastSeen of !0, got %d", notes.LastSeen)
+	}
+	if notes.Number != 3 {
+		t.Errorf("Expected notes.Number of 3, got %d", notes.Number)
+	}
+}

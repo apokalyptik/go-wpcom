@@ -18,7 +18,6 @@ type Site struct {
 	Jetpack      bool                   `json:"jetpack"`
 	Private      bool                   `json:"is_private"`
 	Following    bool                   `json:"is_following"`
-	raw          string                 `json:"-"`
 }
 
 // Get a site struct

@@ -32,7 +32,6 @@ func (c *Client) Me() (*Me, error) {
 	if err != nil {
 		return rval, err
 	}
-	rval.raw = string(js)
 	err = c.read(js, &rval)
 
 	return rval, err
@@ -53,7 +52,6 @@ func (c *Client) SiteByString(hostname string) (*Site, error) {
 	if err != nil {
 		return rval, err
 	}
-	rval.raw = string(js)
 	err = c.read(js, &rval)
 	return rval, err
 }
