@@ -49,7 +49,7 @@ func getTestAnonymousClient() *Client {
 
 func TestMe(t *testing.T) {
 	c := getTestClient()
-	me, err := c.Me(true)
+	me, err := c.Me()
 	if err != nil {
 		t.Errorf("got error: %s", err)
 	}
@@ -64,7 +64,7 @@ func TestMe(t *testing.T) {
 
 func TestAnonMe(t *testing.T) {
 	c := getTestAnonymousClient()
-	me, err := c.Me(true)
+	me, err := c.Me()
 	if err != nil {
 		t.Errorf("got error: %s", err)
 	}
