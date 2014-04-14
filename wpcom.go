@@ -88,6 +88,11 @@ func (c *Client) Debug(debug bool) {
 func (c *Client) fetch(suffix string, getOptions Options, postOptions Options) (js []byte, err error) {
 	var url string
 	var req *http.Request
+	var debug string
+	if c.debug {
+		debug = "API Request Debugging Information\n\n"
+		getOptions.Set("pretty", true)
+	}
 	if false == getOptions.Empty() {
 		url = fmt.Sprintf("%s%s?%s", c.prefix, suffix, getOptions.Encode())
 	} else {
@@ -106,15 +111,31 @@ func (c *Client) fetch(suffix string, getOptions Options, postOptions Options) (
 	}
 	resp, err := c.httpClient.Do(req)
 	if c.debug {
-		log.Printf("Request: %+v\n\nError: %+v", req, err)
-		log.Printf("Response: %+v\n\nError: %+v", resp, err)
+		if false == postOptions.Empty() {
+			debug = fmt.Sprintf(
+				"%s---[ Req(err:%+v) ]---\n%+v\n---[ Post ]---\n%s\n---[ Resp ]---\n%+v",
+				debug,
+				err,
+				req,
+				postOptions.Encode(),
+				resp)
+		} else {
+			debug = fmt.Sprintf(
+				"%s---[ Req(err:%+v) ]---\n%+v\n---[ Resp ]---\n%+v",
+				debug,
+				err,
+				req,
+				resp)
+		}
 	}
 	if err != nil {
+		log.Printf(debug)
 		return js, err
 	}
 	js, err = ioutil.ReadAll(resp.Body)
 	if c.debug {
-		log.Printf("Response Text: %+v\n\nError: %+v", string(js), err)
+		debug = fmt.Sprintf("%s\n---[ js(err:%+v) ]---\n%s", debug, err, string(js))
+		log.Printf(debug)
 	}
 	return js, err
 }
