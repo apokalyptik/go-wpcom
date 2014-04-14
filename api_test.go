@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"testing"
+	"time"
 
 	"code.google.com/p/goconf/conf"
 )
@@ -165,5 +166,29 @@ func TestMissingNote(t *testing.T) {
 	note, err := me.Notification(-1)
 	if err == nil {
 		t.Errorf("Expected error, got %+v", note)
+	}
+}
+
+func TestNoteSeen(t *testing.T) {
+	c := getTestClient()
+	me, err := c.Me(false)
+	set, err := me.NotificationsSeen(time.Now().Unix())
+	if err != nil {
+		t.Errorf("Expected no error, got %s", err.Error())
+	}
+	if set == false {
+		t.Errorf("Expected true, got %#v", set)
+	}
+}
+
+func TestNoteSeenBadTime(t *testing.T) {
+	c := getTestClient()
+	me, err := c.Me(false)
+	set, err := me.NotificationsSeen(0)
+	if err == nil {
+		t.Errorf("Expected error, got none")
+	}
+	if set != false {
+		t.Errorf("Expected false, got %#v", set)
 	}
 }

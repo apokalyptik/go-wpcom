@@ -3,6 +3,7 @@ package wpcom
 import (
 	"errors"
 	"fmt"
+	"log"
 )
 
 type Me struct {
@@ -22,7 +23,7 @@ type Me struct {
 }
 
 func (m *Me) Get() error {
-	js, err := m.client.fetch("me", Options{})
+	js, err := m.client.fetch("me", Options{}, Options{})
 	if err != nil {
 		return err
 	}
@@ -32,7 +33,7 @@ func (m *Me) Get() error {
 
 func (m *Me) Notifications(opt Options) (NotificationsResponse, error) {
 	rval := NotificationsResponse{}
-	js, err := m.client.fetch("notifications/", opt)
+	js, err := m.client.fetch("notifications/", opt, Options{})
 	if err != nil {
 		return rval, err
 	}
@@ -43,7 +44,7 @@ func (m *Me) Notifications(opt Options) (NotificationsResponse, error) {
 
 func (m *Me) Notification(id int64) (Notification, error) {
 	rval := NotificationsResponse{}
-	js, err := m.client.fetch(fmt.Sprintf("notifications/%d", id), Options{})
+	js, err := m.client.fetch(fmt.Sprintf("notifications/%d", id), Options{}, Options{})
 	if err != nil {
 		return Notification{}, err
 	}
@@ -54,4 +55,33 @@ func (m *Me) Notification(id int64) (Notification, error) {
 	} else {
 		return Notification{}, errors.New("not found")
 	}
+}
+
+func (m *Me) NotificationsSeen(timestamp int64) (success bool, err error) {
+	js, err := m.client.fetch(
+		"notifications/seen",
+		Options{}.Set("pretty", true),
+		Options{}.Set("time", timestamp))
+	if err != nil {
+		return false, err
+	}
+	resp := make(map[string]interface{})
+	err = m.client.read(js, &resp)
+	if err != nil {
+		return false, err
+	}
+	if v, ok := resp["success"]; ok {
+		if v2, ok2 := resp["last_seen_time"]; ok2 {
+			if hack(v2).int() == timestamp {
+				return true, nil
+			} else {
+				return false, errors.New("response timestamp mismatched requested timestamp")
+			}
+		} else {
+			return v.(bool), nil
+		}
+	} else {
+		log.Printf("%s", resp)
+	}
+	return
 }

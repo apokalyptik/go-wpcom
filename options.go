@@ -9,6 +9,10 @@ type Options struct {
 	url.Values
 }
 
+func (o Options) Empty() bool {
+	return len(o.Values) == 0
+}
+
 func (o Options) Add(key string, value interface{}) Options {
 	if o.Values == nil {
 		o.Values = make(url.Values)

@@ -3,12 +3,14 @@
 package wpcom
 
 import (
+	"bytes"
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 const PREFIX = "https://public-api.wordpress.com/rest/v1/"
@@ -30,7 +32,7 @@ func (c *Client) Me(fetch ...bool) (*Me, error) {
 	if len(fetch) > 0 && fetch[0] == false {
 		return rval, nil
 	}
-	js, err := c.fetch("me", Options{})
+	js, err := c.fetch("me", Options{}, Options{})
 	if err != nil {
 		return rval, err
 	}
@@ -50,7 +52,7 @@ func (c *Client) SiteByString(hostname string) (*Site, error) {
 	rval.client.Debug(c.debug)
 	rval.client.InsecureSkipVerify(c.insecureSkipVerify)
 
-	js, err := c.fetch(fmt.Sprintf("sites/%s", hostname), Options{})
+	js, err := c.fetch(fmt.Sprintf("sites/%s", hostname), Options{}, Options{})
 	if err != nil {
 		return rval, err
 	}
@@ -83,23 +85,28 @@ func (c *Client) Debug(debug bool) {
 	c.debug = debug
 }
 
-func (c *Client) fetch(suffix string, opt Options) (js []byte, err error) {
+func (c *Client) fetch(suffix string, getOptions Options, postOptions Options) (js []byte, err error) {
 	var url string
-	if getParams := opt.Encode(); getParams != "" {
-		url = fmt.Sprintf("%s%s?%s", c.prefix, suffix, getParams)
+	var req *http.Request
+	if false == getOptions.Empty() {
+		url = fmt.Sprintf("%s%s?%s", c.prefix, suffix, getOptions.Encode())
 	} else {
 		url = fmt.Sprintf("%s%s", c.prefix, suffix)
 	}
-	req, err := http.NewRequest("GET", url, nil)
+	if postOptions.Empty() {
+		req, err = http.NewRequest("GET", url, nil)
+	} else {
+		req, err = http.NewRequest("POST", url, bytes.NewBufferString(postOptions.Encode()))
+		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+		req.Header.Add("Content-Length", strconv.Itoa(len(postOptions.Encode())))
+	}
 	req.Host = "public-api.wordpress.com"
 	if c.token != "" {
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.token))
 	}
-	if c.debug {
-		log.Printf("Request: %+v\n\nError: %+v", req, err)
-	}
 	resp, err := c.httpClient.Do(req)
 	if c.debug {
+		log.Printf("Request: %+v\n\nError: %+v", req, err)
 		log.Printf("Response: %+v\n\nError: %+v", resp, err)
 	}
 	if err != nil {
