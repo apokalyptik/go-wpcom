@@ -21,13 +21,15 @@ type Client struct {
 	insecureSkipVerify bool
 }
 
-func (c *Client) Me() (*Me, error) {
+func (c *Client) Me(fetch bool) (*Me, error) {
 	rval := new(Me)
 	rval.client = New(c.token)
 	rval.client.Prefix(c.prefix)
 	rval.client.Debug(c.debug)
 	rval.client.InsecureSkipVerify(c.insecureSkipVerify)
-
+	if fetch == false {
+		return rval, nil
+	}
 	js, err := c.fetch("me", Options{})
 	if err != nil {
 		return rval, err

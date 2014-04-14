@@ -49,7 +49,7 @@ func getTestAnonymousClient() *Client {
 
 func TestMe(t *testing.T) {
 	c := getTestClient()
-	me, err := c.Me()
+	me, err := c.Me(true)
 	if err != nil {
 		t.Errorf("got error: %s", err)
 	}
@@ -64,7 +64,7 @@ func TestMe(t *testing.T) {
 
 func TestAnonMe(t *testing.T) {
 	c := getTestAnonymousClient()
-	me, err := c.Me()
+	me, err := c.Me(true)
 	if err != nil {
 		t.Errorf("got error: %s", err)
 	}
@@ -119,7 +119,7 @@ func TestWpcomSiteBadId(t *testing.T) {
 
 func TestAnonNotes(t *testing.T) {
 	c := getTestAnonymousClient()
-	me, err := c.Me()
+	me, err := c.Me(false)
 	notes, err := me.Notifications(Options{})
 	if err != nil {
 		t.Errorf("got error: %s", err)
@@ -134,7 +134,7 @@ func TestAnonNotes(t *testing.T) {
 
 func TestNotes(t *testing.T) {
 	c := getTestClient()
-	me, err := c.Me()
+	me, err := c.Me(false)
 	notes, err := me.Notifications(Options{}.Add("number", 3).Add("pretty", true))
 	if err != nil {
 		t.Errorf("got error: %s", err)
@@ -149,7 +149,7 @@ func TestNotes(t *testing.T) {
 
 func TestNote(t *testing.T) {
 	c := getTestClient()
-	me, err := c.Me()
+	me, err := c.Me(false)
 	note, err := me.Notification(1131732529)
 	if err != nil {
 		t.Errorf("got error: %s", err)
@@ -161,7 +161,7 @@ func TestNote(t *testing.T) {
 
 func TestMissingNote(t *testing.T) {
 	c := getTestClient()
-	me, err := c.Me()
+	me, err := c.Me(false)
 	note, err := me.Notification(-1)
 	if err == nil {
 		t.Errorf("Expected error, got %+v", note)
