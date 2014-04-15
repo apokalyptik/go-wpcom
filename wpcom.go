@@ -23,12 +23,17 @@ type Client struct {
 	insecureSkipVerify bool
 }
 
+func (c *Client) Clone() *Client {
+	rval := New(c.token)
+	rval.Prefix(c.prefix)
+	rval.Debug(c.debug)
+	rval.InsecureSkipVerify(c.insecureSkipVerify)
+	return rval
+}
+
 func (c *Client) Me(fetch ...bool) (*Me, error) {
 	rval := new(Me)
-	rval.client = New(c.token)
-	rval.client.Prefix(c.prefix)
-	rval.client.Debug(c.debug)
-	rval.client.InsecureSkipVerify(c.insecureSkipVerify)
+	rval.client = c.Clone()
 	if len(fetch) > 0 && fetch[0] == false {
 		return rval, nil
 	}
@@ -47,10 +52,7 @@ func (c *Client) SiteById(id int) (*Site, error) {
 
 func (c *Client) SiteByString(hostname string) (*Site, error) {
 	rval := new(Site)
-	rval.client = New(c.token)
-	rval.client.Prefix(c.prefix)
-	rval.client.Debug(c.debug)
-	rval.client.InsecureSkipVerify(c.insecureSkipVerify)
+	rval.client = c.Clone()
 
 	js, err := c.fetch(fmt.Sprintf("sites/%s", hostname), Options{}, Options{})
 	if err != nil {
