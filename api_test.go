@@ -121,7 +121,7 @@ func TestWpcomSiteBadId(t *testing.T) {
 func TestAnonNotes(t *testing.T) {
 	c := getTestAnonymousClient()
 	me, err := c.Me(false)
-	notes, err := me.Notifications(Options{})
+	notes, err := me.Notifications(O())
 	if err != nil {
 		t.Errorf("got error: %s", err)
 	}
@@ -136,7 +136,7 @@ func TestAnonNotes(t *testing.T) {
 func TestNotes(t *testing.T) {
 	c := getTestClient()
 	me, err := c.Me(false)
-	notes, err := me.Notifications(Options{}.Add("number", 3).Add("pretty", true))
+	notes, err := me.Notifications(O().Add("number", 3).Add("pretty", true))
 	if err != nil {
 		t.Errorf("got error: %s", err)
 	}
