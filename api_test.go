@@ -192,3 +192,16 @@ func TestNoteSeenBadTime(t *testing.T) {
 		t.Errorf("Expected false, got %#v", set)
 	}
 }
+
+func TestNotesRead(t *testing.T) {
+	c := getTestClient()
+	me, err := c.Me(false)
+	n, _ := me.Notifications(O().Add("number", 3))
+	success, err := me.NotificationsRead(map[int64]int64{
+		n.Notifications[0].ID: -1,
+		n.Notifications[1].ID: -1})
+	if err != nil {
+		t.Errorf("Expected no error, got %s", err.Error())
+	}
+	log.Printf("%#v", success)
+}
