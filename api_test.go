@@ -74,6 +74,11 @@ func TestAnonMe(t *testing.T) {
 	}
 }
 
+func TestFreshlyPressed(t *testing.T) {
+	c := getTestAnonymousClient()
+	c.FreshlyPressed()
+}
+
 func TestSiteString(t *testing.T) {
 	c := getTestAnonymousClient()
 	site, err := c.SiteByString("blog.apokalyptik.com")
