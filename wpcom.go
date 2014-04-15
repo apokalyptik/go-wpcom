@@ -8,7 +8,7 @@
 //  import "fmt"
 //
 //  func main() {
-//      c := wpcom.New("")
+//      c := wpcom.New()
 //      site, _ := c.SiteByString("en.blog.wordpress.com")
 //      fmt.Printf("Site ID: %d\n", site.ID)
 //  }
