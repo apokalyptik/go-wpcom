@@ -197,11 +197,19 @@ func TestNotesRead(t *testing.T) {
 	c := getTestClient()
 	me, err := c.Me(false)
 	n, _ := me.Notifications(O().Add("number", 3))
-	success, err := me.NotificationsRead(map[int64]int64{
+	successes, err := me.NotificationsRead(map[int64]int64{
 		n.Notifications[0].ID: -1,
 		n.Notifications[1].ID: -1})
 	if err != nil {
 		t.Errorf("Expected no error, got %s", err.Error())
 	}
-	log.Printf("%#v", success)
+	nsuccesses := 0
+	for _, v := range successes {
+		if v {
+			nsuccesses++
+		}
+	}
+	if nsuccesses != 2 {
+		t.Errorf("Expected 2 successes, found %d (%+v)", nsuccesses, successes)
+	}
 }
