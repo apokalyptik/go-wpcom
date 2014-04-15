@@ -19,22 +19,3 @@ type Site struct {
 	Private      bool                   `json:"is_private"`
 	Following    bool                   `json:"is_following"`
 }
-
-// Get a site struct
-func NewSite() {
-}
-
-// Get details about the site
-func (s *Site) Info() {
-}
-
-// List recent posts
-func (s *Site) GetPosts() {
-}
-
-// Get a specific post
-func (s *Site) GetPost() {
-}
-
-// Make a new post
-func (s *Site) Post() {}
