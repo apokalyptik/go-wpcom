@@ -37,7 +37,7 @@ func (c *Client) Me(fetch ...bool) (*Me, error) {
 	if len(fetch) > 0 && fetch[0] == false {
 		return rval, nil
 	}
-	js, err := c.fetch("me", Options{}, Options{})
+	js, err := c.fetch("me", O(), O())
 	if err != nil {
 		return rval, err
 	}
@@ -54,7 +54,7 @@ func (c *Client) SiteByString(hostname string) (*Site, error) {
 	rval := new(Site)
 	rval.client = c.Clone()
 
-	js, err := c.fetch(fmt.Sprintf("sites/%s", hostname), Options{}, Options{})
+	js, err := c.fetch(fmt.Sprintf("sites/%s", hostname), O(), O())
 	if err != nil {
 		return rval, err
 	}
@@ -87,7 +87,7 @@ func (c *Client) Debug(debug bool) {
 	c.debug = debug
 }
 
-func (c *Client) fetch(suffix string, getOptions Options, postOptions Options) (js []byte, err error) {
+func (c *Client) fetch(suffix string, getOptions *Options, postOptions *Options) (js []byte, err error) {
 	var url string
 	var req *http.Request
 	var debug string

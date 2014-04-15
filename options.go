@@ -9,11 +9,11 @@ type Options struct {
 	url.Values
 }
 
-func (o Options) Empty() bool {
+func (o *Options) Empty() bool {
 	return len(o.Values) == 0
 }
 
-func (o Options) Add(key string, value interface{}) Options {
+func (o *Options) Add(key string, value interface{}) *Options {
 	if o.Values == nil {
 		o.Values = make(url.Values)
 	}
@@ -26,7 +26,7 @@ func (o Options) Add(key string, value interface{}) Options {
 	return o
 }
 
-func (o Options) Set(key string, value interface{}) Options {
+func (o *Options) Set(key string, value interface{}) *Options {
 	if o.Values == nil {
 		o.Values = make(url.Values)
 	}
@@ -37,4 +37,8 @@ func (o Options) Set(key string, value interface{}) Options {
 		o.Values.Set(key, fmt.Sprintf("%+v", value))
 	}
 	return o
+}
+
+func O() *Options {
+	return new(Options)
 }
