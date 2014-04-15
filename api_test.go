@@ -45,7 +45,7 @@ func getTestClient() *Client {
 }
 
 func getTestAnonymousClient() *Client {
-	return configTestClient(New(""))
+	return configTestClient(New())
 }
 
 func TestMe(t *testing.T) {

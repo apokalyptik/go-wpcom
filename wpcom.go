@@ -1,5 +1,17 @@
 // A client for accessing the WordPress.com (WPCOM) REST API V1
 // See: http://developer.wordpress.com/docs/api/
+//
+// Usage Example:
+//  package main
+//
+//  import "github.com/apokalyptik/go-wpcom"
+//  import "fmt"
+//
+//  func main() {
+//      c := wpcom.New("")
+//      site, _ := c.SiteByString("en.blog.wordpress.com")
+//      fmt.Printf("Site ID: %d\n", site.ID)
+//  }
 package wpcom
 
 import (
@@ -157,10 +169,12 @@ func (c *Client) read(js []byte, into interface{}) error {
 
 // Generate a new WordPress.com REST API Client given an access token. See:
 // https://developer.wordpress.com/docs/oauth2/
-func New(access_token string) *Client {
+func New(access_token ...string) *Client {
 	client := new(Client)
 	client.prefix = PREFIX
 	client.InsecureSkipVerify(false)
-	client.token = access_token
+	if len(access_token) > 0 {
+		client.token = access_token[0]
+	}
 	return client
 }
