@@ -23,6 +23,7 @@ type Client struct {
 	insecureSkipVerify bool
 }
 
+// Create a new client duplicating the settings 1:1 for the current client
 func (c *Client) Clone() *Client {
 	rval := New(c.token)
 	rval.Prefix(c.prefix)
@@ -31,6 +32,12 @@ func (c *Client) Clone() *Client {
 	return rval
 }
 
+// Create a Me struct.  See the documentation for Me for more information
+// about it and its members and methods. By default an API call is made to
+// prepopulate information in the Me struct.  But for times when you don't
+// actually need or want to make that call those would be wasted resources
+// (cpu cycles, wall clock time, bandwidth, etc) and so you can disable this
+// functionality by passing false to this method
 func (c *Client) Me(fetch ...bool) (*Me, error) {
 	rval := new(Me)
 	rval.client = c.Clone()
@@ -46,10 +53,12 @@ func (c *Client) Me(fetch ...bool) (*Me, error) {
 	return rval, err
 }
 
+// Fetch a site struct using the site's integer ID.
 func (c *Client) SiteById(id int) (*Site, error) {
 	return c.SiteByString(fmt.Sprintf("%d", id))
 }
 
+// Fetch a site struct using the site's string hostname.
 func (c *Client) SiteByString(hostname string) (*Site, error) {
 	rval := new(Site)
 	rval.client = c.Clone()
