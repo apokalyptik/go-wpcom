@@ -23,7 +23,7 @@ type Me struct {
 }
 
 func (m *Me) Get() error {
-	js, err := m.client.fetch("me", Options{}, Options{})
+	js, err := m.client.fetch("me", O(), O())
 	if err != nil {
 		return err
 	}
@@ -31,9 +31,9 @@ func (m *Me) Get() error {
 	return err
 }
 
-func (m *Me) Notifications(opt Options) (NotificationsResponse, error) {
+func (m *Me) Notifications(opt *Options) (NotificationsResponse, error) {
 	rval := NotificationsResponse{}
-	js, err := m.client.fetch("notifications/", opt, Options{})
+	js, err := m.client.fetch("notifications/", opt, O())
 	if err != nil {
 		return rval, err
 	}
@@ -44,7 +44,7 @@ func (m *Me) Notifications(opt Options) (NotificationsResponse, error) {
 
 func (m *Me) Notification(id int64) (Notification, error) {
 	rval := NotificationsResponse{}
-	js, err := m.client.fetch(fmt.Sprintf("notifications/%d", id), Options{}, Options{})
+	js, err := m.client.fetch(fmt.Sprintf("notifications/%d", id), O(), O())
 	if err != nil {
 		return Notification{}, err
 	}
@@ -58,10 +58,7 @@ func (m *Me) Notification(id int64) (Notification, error) {
 }
 
 func (m *Me) NotificationsSeen(timestamp int64) (success bool, err error) {
-	js, err := m.client.fetch(
-		"notifications/seen",
-		Options{}.Set("pretty", true),
-		Options{}.Set("time", timestamp))
+	js, err := m.client.fetch("notifications/seen", O(), O().Set("time", timestamp))
 	if err != nil {
 		return false, err
 	}
