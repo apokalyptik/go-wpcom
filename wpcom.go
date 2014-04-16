@@ -22,6 +22,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"strconv"
 )
 
@@ -75,12 +76,19 @@ func (c *Client) SiteByString(hostname string) (*Site, error) {
 	rval := new(Site)
 	rval.client = c.Clone()
 
-	js, err := c.fetch(fmt.Sprintf("sites/%s", hostname), O(), O())
+	js, err := c.fetch(fmt.Sprintf("sites/%s", url.QueryEscape(hostname)), O(), O())
 	if err != nil {
 		return rval, err
 	}
 	err = c.read(js, &rval)
 	return rval, err
+}
+
+func (c *Client) FreshlyPressed() (rval FreshlyPressedResponse, err error) {
+	rval = FreshlyPressedResponse{}
+	js, err := c.fetch("freshly-pressed", O().Add("pretty", true), O())
+	err = c.read(js, &rval)
+	return
 }
 
 // Set the URL Prefix for the API client. This should normally not change unless you are

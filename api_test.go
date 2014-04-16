@@ -74,11 +74,6 @@ func TestAnonMe(t *testing.T) {
 	}
 }
 
-func TestFreshlyPressed(t *testing.T) {
-	c := getTestAnonymousClient()
-	c.FreshlyPressed()
-}
-
 func TestSiteString(t *testing.T) {
 	c := getTestAnonymousClient()
 	site, err := c.SiteByString("blog.apokalyptik.com")
@@ -216,5 +211,30 @@ func TestNotesRead(t *testing.T) {
 	}
 	if nsuccesses != 2 {
 		t.Errorf("Expected 2 successes, found %d (%+v)", nsuccesses, successes)
+	}
+}
+
+func TestFreshlyPressed(t *testing.T) {
+	c := getTestAnonymousClient()
+	fp, err := c.FreshlyPressed()
+	if err != nil {
+		t.Errorf("Expected no error, got %s", err.Error())
+	}
+	_, err = fp.Posts[0].String("title")
+	if err != nil {
+		t.Errorf("Expected no error, got %s", err.Error())
+	}
+	_, err = fp.Posts[0].String("URL")
+	if err != nil {
+		t.Errorf("Expected no error, got %s", err.Error())
+	}
+	a, _ := fp.Posts[0].O("author")
+	_, err = a.String("name")
+	if err != nil {
+		t.Errorf("Expected no error, got %s", err.Error())
+	}
+	_, err = fp.Posts[0].Time("modified")
+	if err != nil {
+		t.Errorf("Expected no error, got %s", err.Error())
 	}
 }
