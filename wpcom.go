@@ -84,6 +84,8 @@ func (c *Client) SiteByString(hostname string) (*Site, error) {
 	return rval, err
 }
 
+// Fetch WordPress.com "Freshly Pressed" Posts.  See:
+// https://developer.wordpress.com/docs/api/1/get/freshly-pressed/
 func (c *Client) FreshlyPressed() (rval FreshlyPressedResponse, err error) {
 	rval = FreshlyPressedResponse{}
 	js, err := c.fetch("freshly-pressed", O().Add("pretty", true), O())
