@@ -3,7 +3,6 @@ package wpcom
 import (
 	"errors"
 	"fmt"
-	"log"
 	"strconv"
 )
 
@@ -18,18 +17,18 @@ import (
 // Client.
 type Me struct {
 	client       *Client
-	ID           int                    `json:"ID"`
-	DisplayName  string                 `json:"display_name"`
-	Username     string                 `json:"username"`
-	Email        string                 `json:"email"`
-	BD           int                    `json:"email"`
-	TokenSiteID  int                    `json:"token_site_id"`
-	Avatar       string                 `json:"avatar_URL"`
-	Profile      string                 `json:"profile_URL"`
-	Verified     bool                   `json:"verified"`
-	Meta         map[string]interface{} `json:"meta"`
-	Error        string                 `json:"error"`
-	ErrorMessage string                 `json:"message"`
+	ID           int                    `mapstructure:"ID"`
+	DisplayName  string                 `mapstructure:"display_name"`
+	Username     string                 `mapstructure:"username"`
+	Email        string                 `mapstructure:"email"`
+	PrimaryBlog  int                    `mapstructure:"primary_blog"`
+	TokenSiteID  int                    `mapstructure:"token_site_id"`
+	Avatar       string                 `mapstructure:"avatar_URL"`
+	Profile      string                 `mapstructure:"profile_URL"`
+	Verified     bool                   `mapstructure:"verified"`
+	Meta         map[string]interface{} `mapstructure:"meta"`
+	Error        string                 `mapstructure:"error"`
+	ErrorMessage string                 `mapstructure:"message"`
 }
 
 // Fetch, or re-fetch, details about the current API user.  The method updates
@@ -58,7 +57,6 @@ func (m *Me) Notifications(opt *Options) (NotificationsResponse, error) {
 		return rval, err
 	}
 	err = m.client.read(js, &rval)
-	rval.unhack()
 	return rval, err
 }
 
@@ -71,7 +69,6 @@ func (m *Me) Notification(id int64) (Notification, error) {
 		return Notification{}, err
 	}
 	err = m.client.read(js, &rval)
-	rval.unhack()
 	if rval.Number > 0 {
 		return rval.Notifications[0], err
 	} else {
@@ -86,25 +83,18 @@ func (m *Me) NotificationsSeen(timestamp int64) (success bool, err error) {
 	if err != nil {
 		return false, err
 	}
-	resp := make(map[string]interface{})
-	err = m.client.read(js, &resp)
+	resp := new(NotificationsSeenResponse)
+	err = m.client.read(js, resp)
 	if err != nil {
 		return false, err
 	}
-	if v, ok := resp["success"]; ok {
-		if v2, ok2 := resp["last_seen_time"]; ok2 {
-			if hack(v2).int() == timestamp {
-				return true, nil
-			} else {
-				return false, errors.New("response timestamp mismatched requested timestamp")
-			}
-		} else {
-			return v.(bool), nil
+	if resp.Success {
+		if resp.LastSeen == timestamp {
+			return true, nil
 		}
-	} else {
-		log.Printf("%s", resp)
+		return false, errors.New("response timestamp mismatched requested timestamp")
 	}
-	return
+	return false, nil
 }
 
 // Mark a set of notifications as read.  The l map being passed matches the
@@ -123,7 +113,7 @@ func (m *Me) NotificationsRead(l map[int64]int64) (updated map[int64]bool, err e
 	}
 	rval := make(map[string]interface{})
 	err = m.client.read(js, &rval)
-	if hack(rval["success"]).bool() != true {
+	if rval["success"] != true {
 		return updated, errors.New("API returned failure result")
 	}
 	for _, v := range rval["updated"].([]interface{}) {

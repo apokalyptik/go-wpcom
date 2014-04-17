@@ -214,6 +214,7 @@ func TestNotesRead(t *testing.T) {
 	}
 }
 
+/*
 func TestFreshlyPressed(t *testing.T) {
 	c := getTestAnonymousClient()
 	fp, err := c.FreshlyPressed()
@@ -238,3 +239,4 @@ func TestFreshlyPressed(t *testing.T) {
 		t.Errorf("Expected no error, got %s", err.Error())
 	}
 }
+*/

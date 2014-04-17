@@ -24,6 +24,8 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+
+	"github.com/mitchellh/mapstructure"
 )
 
 const PREFIX = "https://public-api.wordpress.com/rest/v1/"
@@ -61,8 +63,7 @@ func (c *Client) Me(fetch ...bool) (*Me, error) {
 	if err != nil {
 		return rval, err
 	}
-	err = c.read(js, &rval)
-
+	err = c.read(js, rval)
 	return rval, err
 }
 
@@ -80,7 +81,7 @@ func (c *Client) SiteByString(hostname string) (*Site, error) {
 	if err != nil {
 		return rval, err
 	}
-	err = c.read(js, &rval)
+	err = c.read(js, rval)
 	return rval, err
 }
 
@@ -174,7 +175,20 @@ func (c *Client) fetch(suffix string, getOptions *Options, postOptions *Options)
 }
 
 func (c *Client) read(js []byte, into interface{}) error {
-	return json.Unmarshal(js, into)
+	jsStruct := make(map[string]interface{})
+	err := json.Unmarshal(js, &jsStruct)
+	if err != nil {
+		return err
+	}
+	config := &mapstructure.DecoderConfig{
+		WeaklyTypedInput: true,
+		Result:           into}
+	decoder, err := mapstructure.NewDecoder(config)
+	if err != nil {
+		return err
+	}
+	err = decoder.Decode(jsStruct)
+	return err
 }
 
 // Generate a new WordPress.com REST API Client given an access token. See:

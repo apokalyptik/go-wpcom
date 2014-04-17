@@ -3,19 +3,19 @@ package wpcom
 // A site object to act upon
 type Site struct {
 	client       *Client
-	ID           int                    `json:"ID"`
-	Name         string                 `json:"name"`
-	Description  string                 `json:"description"`
-	URL          string                 `json:"URL"`
-	Posts        int                    `json:"post_count"`
-	Subscribers  int                    `json:"subscribers_count"`
-	Lang         string                 `json:"lang"`
-	Visible      string                 `json:"visible"`
-	Options      map[string]interface{} `json:"options"`
-	Meta         map[string]interface{} `json:"meta"`
-	Error        string                 `json:"error"`
-	ErrorMessage string                 `json:"message"`
-	Jetpack      bool                   `json:"jetpack"`
-	Private      bool                   `json:"is_private"`
-	Following    bool                   `json:"is_following"`
+	ID           int                    `mapstructure:"ID"`
+	Name         string                 `mapstructure:"name"`
+	Description  string                 `mapstructure:"description"`
+	URL          string                 `mapstructure:"URL"`
+	Posts        int                    `mapstructure:"post_count"`
+	Subscribers  int                    `mapstructure:"subscribers_count"`
+	Lang         string                 `mapstructure:"lang"`
+	Visible      string                 `mapstructure:"visible"`
+	Options      map[string]interface{} `mapstructure:"options"`
+	Meta         map[string]interface{} `mapstructure:"meta"`
+	Error        string                 `mapstructure:"error"`
+	ErrorMessage string                 `mapstructure:"message"`
+	Jetpack      bool                   `mapstructure:"jetpack"`
+	Private      bool                   `mapstructure:"is_private"`
+	Following    bool                   `mapstructure:"is_following"`
 }
