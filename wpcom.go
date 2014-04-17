@@ -23,6 +23,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"reflect"
 	"strconv"
 
 	"github.com/mitchellh/mapstructure"
@@ -182,7 +183,15 @@ func (c *Client) read(js []byte, into interface{}) error {
 	}
 	config := &mapstructure.DecoderConfig{
 		WeaklyTypedInput: true,
-		Result:           into}
+		Result:           into,
+		DecodeHook: func(k1 reflect.Kind, k2 reflect.Kind, i interface{}) (interface{}, error) {
+			// This is a lovely hack for Posts (maybe other places) where metadata can be
+			// false or an array of objects. Thanks for that!
+			if k1.String() == "bool" && k2.String() == "slice" {
+				return []string{}, nil
+			}
+			return i, nil
+		}}
 	decoder, err := mapstructure.NewDecoder(config)
 	if err != nil {
 		return err

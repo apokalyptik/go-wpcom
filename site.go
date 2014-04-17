@@ -11,11 +11,14 @@ type Site struct {
 	Subscribers  int                    `mapstructure:"subscribers_count"`
 	Lang         string                 `mapstructure:"lang"`
 	Visible      string                 `mapstructure:"visible"`
-	Options      map[string]interface{} `mapstructure:"options"`
-	Meta         map[string]interface{} `mapstructure:"meta"`
+	Options      map[string]SiteOptions `mapstructure:"options"`
+	Meta         map[string]SiteMeta    `mapstructure:"meta"`
 	Error        string                 `mapstructure:"error"`
 	ErrorMessage string                 `mapstructure:"message"`
 	Jetpack      bool                   `mapstructure:"jetpack"`
 	Private      bool                   `mapstructure:"is_private"`
 	Following    bool                   `mapstructure:"is_following"`
 }
+
+type SiteMeta map[string]string
+type SiteOptions map[string]string

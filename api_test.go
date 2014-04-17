@@ -214,29 +214,19 @@ func TestNotesRead(t *testing.T) {
 	}
 }
 
-/*
 func TestFreshlyPressed(t *testing.T) {
 	c := getTestAnonymousClient()
 	fp, err := c.FreshlyPressed()
 	if err != nil {
 		t.Errorf("Expected no error, got %s", err.Error())
 	}
-	_, err = fp.Posts[0].String("title")
-	if err != nil {
-		t.Errorf("Expected no error, got %s", err.Error())
+	if fp.Posts[0].Title == "" {
+		t.Errorf("Exptected a title, got ''")
 	}
-	_, err = fp.Posts[0].String("URL")
-	if err != nil {
-		t.Errorf("Expected no error, got %s", err.Error())
+	if fp.Posts[0].URL == "" {
+		t.Errorf("Exptected a URL, got ''")
 	}
-	a, _ := fp.Posts[0].O("author")
-	_, err = a.String("name")
-	if err != nil {
-		t.Errorf("Expected no error, got %s", err.Error())
-	}
-	_, err = fp.Posts[0].Time("modified")
-	if err != nil {
-		t.Errorf("Expected no error, got %s", err.Error())
+	if fp.Posts[0].Author.ID == 0 {
+		t.Errorf("Expected an author ID, got 0")
 	}
 }
-*/
