@@ -1,0 +1,76 @@
+DONE -- GET/POST
+
+x POST /notifications/seen	Set the timestamp of the most recently seen Notification
+x POST /notifications/read	Mark a set of Notifications as read
+x GET  /me	Meta data about auth token's User
+x GET  /sites/$site	Information about a site ID/domain
+x GET  /sites/$site/posts/	Return matching Posts
+x GET  /sites/$site/posts/$post_ID	Return a single Post (by ID)
+x GET  /sites/$site/posts/slug:$post_slug	Return a single Post (by slug)
+x GET  /freshly-pressed/	List Freshly Pressed Posts
+x GET  /notifications/	Reverse-chronologically list User Notifications
+x GET  /notifications/$note_ID	Get a Notification
+
+TODO -- GET
+  GET  /sites/$site/posts/$post_ID/likes/	List the Likes for a Post
+  GET  /sites/$site/posts/$post_ID/likes/mine/	Get your Like status for a Post
+  GET  /sites/$site/posts/$post_ID/reblogs/mine	Get Reblog status for a Post
+  GET  /sites/$site/comments/	Return recent Comments
+  GET  /sites/$site/posts/$post_ID/replies/	Return recent Comments for a Post
+  GET  /sites/$site/comments/$comment_ID	Return a single Comment
+  GET  /sites/$site/categories/slug:$category	Returns information on a single Category
+  GET  /sites/$site/categories	Returns a list of a site's categories
+  GET  /sites/$site/tags	Returns a list of a site's tags
+  GET  /sites/$site/tags/slug:$tag	Returns information on a single Tag
+  GET  /sites/$site/follows/mine	Get Blog Following status for this User
+  GET  /sites/$site/follows/	List a site's followers in reverse chronological order
+  GET  /insights	A list stats/metrics/insights that the provided developer token has access to.
+  GET  /insights/$slug	Raw data for a particular graph.
+  GET  /read/menu/	Default reader menu.
+  GET  /read/following/	List of posts from the blogs a user follows.
+  GET  /read/liked/	List of posts from the blogs a user likes.
+  GET  /read/tags/$tag/posts	List of posts from a tag
+  GET  /read/tags	Returns the list of tags subscribed to by the user.
+  GET  /read/tags/$tag	Returns details about a specified tag.
+  GET  /read/tags/$tag/mine	Returns the subscribed status of the user.
+  GET  /read/following/mine	List the feeds the user is following.
+  GET  /read/recommendations/mine/	Get recommendations to blogs you may like
+  GET  /sites/$site/stats	Get a site's stats
+  GET  /sites/$site/stats/visits	View and visitor counts for a site
+  GET  /sites/$site/stats/referrers	Get a site's referrers
+  GET  /sites/$site/stats/top-posts	View a site's top posts and pages by views
+  GET  /sites/$site/stats/country-views	View a site's views by country
+  GET  /sites/$site/stats/clicks	View a site's outbound clicks
+  GET  /sites/$site/stats/search-terms	View search terms used to find the site
+  GET  /sites/$site/media/	Return the media library
+  GET  /sites/$site/media/$media_ID	Return a single media item (by ID)
+
+TODO - POST
+  POST /sites/$site/posts/$post_ID	Edit a Post
+  POST /sites/$site/posts/new	Create a Post
+  POST /sites/$site/posts/$post_ID/delete	Delete a Post. 
+  POST /sites/$site/posts/$post_ID/likes/new	Like a Post
+  POST /sites/$site/posts/$post_ID/likes/mine/delete	Remove your Like from a Post
+  POST /sites/$site/posts/$post_ID/reblogs/new	Reblog a Post
+  POST /sites/$site/posts/$post/related	Search within a site for related posts
+  POST /sites/$site/comments/$comment_ID	Edit a Comment
+  POST /sites/$site/posts/$post_ID/replies/new	Create a Comment on a Post
+  POST /sites/$site/comments/$comment_ID/replies/new	Create a Comment as a reply to another Comment
+  POST /sites/$site/comments/$comment_ID/delete	Delete a Comment
+  POST /sites/$site/categories/slug:$category	Edit a Category
+  POST /sites/$site/tags/slug:$tag	Edit a Tag
+  POST /sites/$site/categories/new	Create a new Category
+  POST /sites/$site/tags/new	Create a new Tag
+  POST /sites/$site/categories/slug:$category/delete	Delete a Category
+  POST /sites/$site/tags/slug:$tag/delete	Delete a Tag
+  POST /sites/$site/follows/new	Follow a Blog
+  POST /sites/$site/follows/mine/delete	Unfollow a Blog
+  POST /read/tags/$tag/mine/new	Subscribe to a new tag.
+  POST /read/tags/$tag/mine/delete	Unsubscribe from a tag.
+  POST /read/following/mine/new	Follow the specified blog.
+  POST /read/following/mine/delete	Unfollow the specified blog.
+  POST /sites/$site/media/$media_ID	Edit basic information about a media item
+  POST /sites/$site/media/new	Upload a new piece of media
+  POST /sites/$site/media/$media_ID/delete	Delete a piece of media
+
+
