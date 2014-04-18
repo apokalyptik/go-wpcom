@@ -75,3 +75,16 @@ func (s *Site) GetPost(id interface{}, o *Options) (rval *Post, err error) {
 	rval.client = s.client.Clone()
 	return
 }
+
+// Query for comments on a site. See the following URL for possible options.
+// http://developer.wordpress.com/docs/api/1/get/sites/%24site/comments/
+func (s *Site) GetComments(o *Options) (comments *Comments, err error) {
+	comments = new(Comments)
+	prefix := fmt.Sprintf("sites/%d/comments/", s.ID)
+	js, err := s.client.fetch(prefix, o, O())
+	if err != nil {
+		return
+	}
+	err = s.client.read(js, comments)
+	return
+}

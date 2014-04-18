@@ -10,12 +10,12 @@ x GET  /notifications/	Reverse-chronologically list User Notifications
 x GET  /notifications/$note_ID	Get a Notification
 x POST /notifications/seen	Set the timestamp of the most recently seen Notification
 x POST /notifications/read	Mark a set of Notifications as read
+x GET  /sites/$site/comments/	Return recent Comments
 
 TODO -- GET
   GET  /sites/$site/posts/$post_ID/likes/	List the Likes for a Post
   GET  /sites/$site/posts/$post_ID/likes/mine/	Get your Like status for a Post
   GET  /sites/$site/posts/$post_ID/reblogs/mine	Get Reblog status for a Post
-  GET  /sites/$site/comments/	Return recent Comments
   GET  /sites/$site/posts/$post_ID/replies/	Return recent Comments for a Post
   GET  /sites/$site/comments/$comment_ID	Return a single Comment
   GET  /sites/$site/categories/slug:$category	Returns information on a single Category
