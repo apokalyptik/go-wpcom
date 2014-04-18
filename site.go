@@ -33,6 +33,9 @@ type SitePosts struct {
 	Posts []Post `mapstructure:"posts"`
 }
 
+// Get posts for a site.  For possible options see the following documentation
+// URL:
+// https://developer.wordpress.com/docs/api/1/get/sites/%24site/posts/
 func (s *Site) GetPosts(o *Options) (rval *SitePosts, err error) {
 	rval = new(SitePosts)
 	prefix := fmt.Sprintf("sites/%d/posts/", s.ID)
@@ -47,6 +50,12 @@ func (s *Site) GetPosts(o *Options) (rval *SitePosts, err error) {
 	return
 }
 
+// Get a site by ID, or by slug.  The function accepts both an integer type, or a
+// string type for the id parameter.  Any other type will return an error and a nil
+// reference.
+// For possible options see the following documentation URLs:
+// https://developer.wordpress.com/docs/api/1/get/sites/%24site/posts/%24post_ID/
+// https://developer.wordpress.com/docs/api/1/get/sites/%24site/posts/slug:%24post_slug/
 func (s *Site) GetPost(id interface{}, o *Options) (rval *Post, err error) {
 	var prefix string
 	rval = new(Post)
