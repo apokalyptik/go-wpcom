@@ -90,7 +90,7 @@ func (c *Client) SiteByString(hostname string) (*Site, error) {
 // https://developer.wordpress.com/docs/api/1/get/freshly-pressed/
 func (c *Client) FreshlyPressed() (rval FreshlyPressedResponse, err error) {
 	rval = FreshlyPressedResponse{}
-	js, err := c.fetch("freshly-pressed", O().Add("pretty", true), O())
+	js, err := c.fetch("freshly-pressed", O(), O())
 	err = c.read(js, &rval)
 	for k, _ := range rval.Posts {
 		rval.Posts[k].client = c.Clone()
