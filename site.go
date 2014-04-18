@@ -1,5 +1,7 @@
 package wpcom
 
+import "fmt"
+
 // A site object to act upon
 type Site struct {
 	client       *Client
@@ -22,3 +24,22 @@ type Site struct {
 
 type SiteMeta map[string]string
 type SiteOptions map[string]string
+
+type SitePosts struct {
+	Found int    `mapstructure:"found"`
+	Posts []Post `mapstructure:"posts"`
+}
+
+func (s *Site) GetPosts(o *Options) (rval *SitePosts, err error) {
+	rval = new(SitePosts)
+	prefix := fmt.Sprintf("sites/%d/posts/", s.ID)
+	js, err := s.client.fetch(prefix, o, O())
+	if err != nil {
+		return
+	}
+	err = s.client.read(js, rval)
+	for k, _ := range rval.Posts {
+		rval.Posts[k].client = s.client.Clone()
+	}
+	return
+}

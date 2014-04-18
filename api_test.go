@@ -230,3 +230,21 @@ func TestFreshlyPressed(t *testing.T) {
 		t.Errorf("Expected an author ID, got 0")
 	}
 }
+
+func TestSiteGetPosts(t *testing.T) {
+	c := getTestClient()
+	site, _ := c.SiteById(448698)
+	resp, err := site.GetPosts(O().Add("number", 3))
+	if err != nil {
+		t.Errorf("Expected no error, got %s", err.Error())
+	}
+	if len(resp.Posts) != 3 {
+		t.Errorf("Expected 3 Found, got %d", len(resp.Posts))
+	}
+	if resp.Posts[0].Title == "" {
+		t.Errorf("Expected a title for the first post returned. Got an empty string")
+	}
+	if resp.Posts[0].Author.Name == "" {
+		t.Errorf("Expected an author name for the first post returned. Got an empty string")
+	}
+}

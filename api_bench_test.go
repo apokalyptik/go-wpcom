@@ -106,3 +106,11 @@ func BenchmarkNoteRead(b *testing.B) {
 		me.NotificationsRead(map[int64]int64{id: -1})
 	}
 }
+
+/*
+func BenchmarkFreshlyPressed(b *testing.B) {
+}
+
+func BenchmarkSiteGetPosts(b *testing.B) {
+}
+*/
