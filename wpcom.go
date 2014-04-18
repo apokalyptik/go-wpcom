@@ -92,6 +92,9 @@ func (c *Client) FreshlyPressed() (rval FreshlyPressedResponse, err error) {
 	rval = FreshlyPressedResponse{}
 	js, err := c.fetch("freshly-pressed", O().Add("pretty", true), O())
 	err = c.read(js, &rval)
+	for k, _ := range rval.Posts {
+		rval.Posts[k].client = c.Clone()
+	}
 	return
 }
 

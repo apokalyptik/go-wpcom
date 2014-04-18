@@ -1,6 +1,7 @@
 package wpcom
 
 type Post struct {
+	client        *Client
 	ID            int                       `mapstructure:"ID"`
 	SiteId        int                       `mapstructure:"site_ID"`
 	Author        PostAuthor                `mapstructure:"author"`
