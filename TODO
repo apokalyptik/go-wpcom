@@ -1,7 +1,5 @@
 DONE -- GET/POST
 
-x POST /notifications/seen	Set the timestamp of the most recently seen Notification
-x POST /notifications/read	Mark a set of Notifications as read
 x GET  /me	Meta data about auth token's User
 x GET  /sites/$site	Information about a site ID/domain
 x GET  /sites/$site/posts/	Return matching Posts
@@ -10,6 +8,8 @@ x GET  /sites/$site/posts/slug:$post_slug	Return a single Post (by slug)
 x GET  /freshly-pressed/	List Freshly Pressed Posts
 x GET  /notifications/	Reverse-chronologically list User Notifications
 x GET  /notifications/$note_ID	Get a Notification
+x POST /notifications/seen	Set the timestamp of the most recently seen Notification
+x POST /notifications/read	Mark a set of Notifications as read
 
 TODO -- GET
   GET  /sites/$site/posts/$post_ID/likes/	List the Likes for a Post
