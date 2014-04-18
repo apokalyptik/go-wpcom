@@ -1,6 +1,9 @@
 package wpcom
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 // A site object to act upon
 type Site struct {
@@ -41,5 +44,25 @@ func (s *Site) GetPosts(o *Options) (rval *SitePosts, err error) {
 	for k, _ := range rval.Posts {
 		rval.Posts[k].client = s.client.Clone()
 	}
+	return
+}
+
+func (s *Site) GetPost(id interface{}, o *Options) (rval *Post, err error) {
+	var prefix string
+	rval = new(Post)
+	switch v := id.(type) {
+	case string:
+		prefix = fmt.Sprintf("sites/%d/posts/slug:%s", s.ID, v)
+	case int, int64, int32, int16, int8, uint, uint64, uint32, uint16, uint8:
+		prefix = fmt.Sprintf("sites/%d/posts/%d", s.ID, v)
+	default:
+		return nil, errors.New("Invalid id type")
+	}
+	js, err := s.client.fetch(prefix, o, O())
+	if err != nil {
+		return
+	}
+	err = s.client.read(js, rval)
+	rval.client = s.client.Clone()
 	return
 }

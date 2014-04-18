@@ -113,4 +113,10 @@ func BenchmarkFreshlyPressed(b *testing.B) {
 
 func BenchmarkSiteGetPosts(b *testing.B) {
 }
+
+func BenchmarkSiteGetPostById(b *testing.B) {
+}
+
+func BenchmarkSiteGetPostBySlug(b *testing.B) {
+}
 */
