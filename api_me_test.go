@@ -27,3 +27,17 @@ func TestAnonMe(t *testing.T) {
 		t.Errorf("Expected ID of 0, got %d", me.ID)
 	}
 }
+
+func BenchmarkAnonymousMe(b *testing.B) {
+	c := getTestAnonymousClient()
+	for i := 0; i < b.N; i++ {
+		c.Me(true)
+	}
+}
+
+func BenchmarkAuthedMe(b *testing.B) {
+	c := getTestClient()
+	for i := 0; i < b.N; i++ {
+		c.Me(true)
+	}
+}

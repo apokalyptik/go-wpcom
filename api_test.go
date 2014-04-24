@@ -8,6 +8,8 @@ import (
 )
 
 var testconf *conf.ConfigFile
+var foundSitesForSiteByString = make(map[int]string)
+var foundNotesForTesting []Notification
 
 func init() {
 	var err error

@@ -1,6 +1,7 @@
 package wpcom
 
 import (
+	"math/rand"
 	"testing"
 	"time"
 )
@@ -98,5 +99,56 @@ func TestNotesRead(t *testing.T) {
 	}
 	if nsuccesses != 2 {
 		t.Errorf("Expected 2 successes, found %d (%+v)", nsuccesses, successes)
+	}
+}
+
+func BenchmarkAnonNotes(b *testing.B) {
+	c := getTestAnonymousClient()
+	me, _ := c.Me(false)
+	for i := 0; i < b.N; i++ {
+		me.Notifications(O())
+	}
+}
+
+func BenchmarkAuthedNotes(b *testing.B) {
+	c := getTestClient()
+	me, _ := c.Me(false)
+	for i := 0; i < b.N; i++ {
+		n, _ := me.Notifications(O())
+		foundNotesForTesting = n.Notifications
+	}
+}
+
+func BenchmarkNoteFetch(b *testing.B) {
+	c := getTestClient()
+	me, _ := c.Me(false)
+	for i := 0; i < b.N; i++ {
+		id := foundNotesForTesting[rand.Intn(len(foundNotesForTesting)-1)].ID
+		me.Notification(id)
+	}
+}
+
+func BenchmarkNotesSeen(b *testing.B) {
+	c := getTestClient()
+	me, _ := c.Me(false)
+	for i := 0; i < b.N; i++ {
+		me.NotificationsSeen(time.Now().Unix())
+	}
+}
+
+func BenchmarkNotesSeenBad(b *testing.B) {
+	c := getTestClient()
+	me, _ := c.Me(false)
+	for i := 0; i < b.N; i++ {
+		me.NotificationsSeen(-1)
+	}
+}
+
+func BenchmarkNoteRead(b *testing.B) {
+	c := getTestClient()
+	me, _ := c.Me(false)
+	for i := 0; i < b.N; i++ {
+		id := foundNotesForTesting[rand.Intn(len(foundNotesForTesting)-1)].ID
+		me.NotificationsRead(map[int64]int64{id: -1})
 	}
 }
