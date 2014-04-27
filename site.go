@@ -88,3 +88,16 @@ func (s *Site) GetComments(o *Options) (comments *Comments, err error) {
 	err = s.client.read(js, comments)
 	return
 }
+
+// Query for a comment on a site. See the following URL for possible options.
+// https://developer.wordpress.com/docs/api/1/get/sites/%24site/comments/%24comment_ID/
+func (s *Site) Comment(id int) (comment *Comment, err error) {
+	comment = new(Comment)
+	prefix := fmt.Sprintf("sites/%d/comments/%d", s.ID, id)
+	js, err := s.client.fetch(prefix, O(), O())
+	if err != nil {
+		return
+	}
+	err = s.client.read(js, comment)
+	return
+}

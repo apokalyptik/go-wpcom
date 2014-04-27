@@ -51,6 +51,18 @@ func TestWpcomSiteBadID(t *testing.T) {
 	}
 }
 
+func TestSiteGetComment(t *testing.T) {
+	c := getTestClient()
+	s, _ := c.SiteById(448698)
+	comment, err := s.Comment(7)
+	if err != nil {
+		t.Errorf("got error: %s", err)
+	}
+	if comment.ID != 7 {
+		t.Errorf("Expected ID of 7, got %d", comment.ID)
+	}
+}
+
 func BenchmarkSiteById(b *testing.B) {
 	c := getTestAnonymousClient()
 	for i := 0; i < b.N; i++ {
