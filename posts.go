@@ -1,5 +1,7 @@
 package wpcom
 
+import "fmt"
+
 type Post struct {
 	client        *Client
 	ID            int                       `mapstructure:"ID"`
@@ -31,7 +33,7 @@ type Post struct {
 	Attachments   map[int]PostAttachment    `mapstructure:"attachments"`
 	Metadata      []PostMeta                `mapstructure:"metadata"`
 	Meta          map[string]PostMeta       `mapstructure:"meta"`
-	FeaturedMedia interface{}               `"mapstructure:"featured_media"`
+	FeaturedMedia interface{}               `mapstructure:"featured_media"`
 }
 
 type PostAttachment struct {
@@ -74,3 +76,16 @@ type PostAuthor struct {
 }
 
 type PostMeta map[string]string
+
+// Query for comments on a Post. See the following URL for possible options.
+// https://developer.wordpress.com/docs/api/1/get/sites/%24site/posts/%24post_ID/replies/
+func (p *Post) Comments(o *Options) (comments *Comments, err error) {
+	comments = new(Comments)
+	prefix := fmt.Sprintf("sites/%d/posts/%d/replies/", p.SiteId, p.ID)
+	js, err := p.client.fetch(prefix, o, O())
+	if err != nil {
+		return
+	}
+	err = p.client.read(js, comments)
+	return
+}
