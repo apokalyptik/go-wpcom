@@ -63,6 +63,24 @@ func TestSiteGetComment(t *testing.T) {
 	}
 }
 
+func TestSiteCategories(t *testing.T) {
+	c := getTestClient()
+	s, _ := c.SiteById(448698)
+	cats, err := s.Categories()
+	if err != nil {
+		t.Errorf("got error: %s", err)
+	}
+	if cats.Found < 1 {
+		t.Errorf("Expected cats.Found >= 1")
+	}
+	if cats.Categories[0].ID == 0 {
+		t.Errorf("Expected first cat to have ID > 0")
+	}
+	if cats.Categories[0].Slug == "" {
+		t.Errorf("Expected first cat to have Slug != ''")
+	}
+}
+
 func BenchmarkSiteById(b *testing.B) {
 	c := getTestAnonymousClient()
 	for i := 0; i < b.N; i++ {

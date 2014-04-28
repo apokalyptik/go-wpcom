@@ -101,3 +101,20 @@ func (s *Site) Comment(id int) (comment *Comment, err error) {
 	err = s.client.read(js, comment)
 	return
 }
+
+func (s *Site) Categories() (categories *Categories, err error) {
+	categories = new(Categories)
+	prefix := fmt.Sprintf("sites/%d/categories", s.ID)
+	js, err := s.client.fetch(prefix, O(), O())
+	if err != nil {
+		return
+	}
+	err = s.client.read(js, categories)
+	if err == nil {
+		for k, _ := range categories.Categories {
+			categories.Categories[k].client = s.client.Clone()
+			categories.Categories[k].siteID = s.ID
+		}
+	}
+	return
+}

@@ -13,13 +13,13 @@ x POST /notifications/read	Mark a set of Notifications as read
 x GET  /sites/$site/comments/	Return recent Comments
 x GET  /sites/$site/posts/$post_ID/replies/ Return recent Comments for a Post
 x GET  /sites/$site/comments/$comment_ID  Return a single Comment
+x GET  /sites/$site/categories  Returns a list of a site's categories
 
 TODO -- GET
   GET  /sites/$site/posts/$post_ID/likes/	List the Likes for a Post
   GET  /sites/$site/posts/$post_ID/likes/mine/	Get your Like status for a Post
   GET  /sites/$site/posts/$post_ID/reblogs/mine	Get Reblog status for a Post
   GET  /sites/$site/categories/slug:$category	Returns information on a single Category
-  GET  /sites/$site/categories	Returns a list of a site's categories
   GET  /sites/$site/tags	Returns a list of a site's tags
   GET  /sites/$site/tags/slug:$tag	Returns information on a single Tag
   GET  /sites/$site/follows/mine	Get Blog Following status for this User
