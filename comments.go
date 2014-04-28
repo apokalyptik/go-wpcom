@@ -8,17 +8,17 @@ type Comments struct {
 
 // The structure for a single comment
 type Comment struct {
-	ID       int                 `mapstructure:"ID"`
-	Post     CommentPost         `mapstructure:"post"`
-	Author   PostAuthor          `mapstructure:"author"`
-	Date     string              `mapstructure:"date"`
-	URL      string              `mapstructure:"URL"`
-	ShortURL string              `mapstructure:"short_URL"`
-	Content  string              `mapstructure:"content"`
-	Status   string              `mapstructure:"status"`
-	Parent   bool                `mapstructure:"parent"`
-	Type     string              `mapstructure:"type"`
-	Meta     map[string]PostMeta `mapstructure:"meta"`
+	ID       int             `mapstructure:"ID"`
+	Post     CommentPost     `mapstructure:"post"`
+	Author   PostAuthor      `mapstructure:"author"`
+	Date     string          `mapstructure:"date"`
+	URL      string          `mapstructure:"URL"`
+	ShortURL string          `mapstructure:"short_URL"`
+	Content  string          `mapstructure:"content"`
+	Status   string          `mapstructure:"status"`
+	Parent   bool            `mapstructure:"parent"`
+	Type     string          `mapstructure:"type"`
+	Meta     map[string]Meta `mapstructure:"meta"`
 }
 
 // The structure for comment details about the post for which the comment was made

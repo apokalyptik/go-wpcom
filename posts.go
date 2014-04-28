@@ -31,8 +31,8 @@ type Post struct {
 	Tags          map[string]PostTag        `mapstructure:"tags"`
 	Categories    map[string]PostCategories `mapstructure:"categories"`
 	Attachments   map[int]PostAttachment    `mapstructure:"attachments"`
-	Metadata      []PostMeta                `mapstructure:"metadata"`
-	Meta          map[string]PostMeta       `mapstructure:"meta"`
+	Metadata      []Meta                    `mapstructure:"metadata"`
+	Meta          map[string]Meta           `mapstructure:"meta"`
 	FeaturedMedia interface{}               `mapstructure:"featured_media"`
 }
 
@@ -46,22 +46,22 @@ type PostAttachment struct {
 }
 
 type PostTag struct {
-	ID          int                 `mapstructure:"ID"`
-	Name        string              `mapstructure:"name"`
-	Slug        string              `mapstructure:"slug"`
-	Description string              `mapstructure:"description"`
-	PostCount   int                 `mapstructure:"post_count"`
-	Meta        map[string]PostMeta `mapstructure:"meta"`
+	ID          int             `mapstructure:"ID"`
+	Name        string          `mapstructure:"name"`
+	Slug        string          `mapstructure:"slug"`
+	Description string          `mapstructure:"description"`
+	PostCount   int             `mapstructure:"post_count"`
+	Meta        map[string]Meta `mapstructure:"meta"`
 }
 
 type PostCategories struct {
-	ID          int                 `mapstructure:"ID"`
-	Name        string              `mapstructure:"name"`
-	Slug        string              `mapstructure:"slug"`
-	Description string              `mapstructure:"description"`
-	PostCount   int                 `mapstructure:"post_count"`
-	Parent      int                 `mapstructure:"parent"`
-	Meta        map[string]PostMeta `mapstructure:"meta"`
+	ID          int             `mapstructure:"ID"`
+	Name        string          `mapstructure:"name"`
+	Slug        string          `mapstructure:"slug"`
+	Description string          `mapstructure:"description"`
+	PostCount   int             `mapstructure:"post_count"`
+	Parent      int             `mapstructure:"parent"`
+	Meta        map[string]Meta `mapstructure:"meta"`
 }
 
 type PostAuthor struct {
@@ -74,8 +74,6 @@ type PostAuthor struct {
 	ProfileURL string `mapstructure:"profile_url"`
 	SiteID     int    `mapstructure:"site_ID"`
 }
-
-type PostMeta map[string]string
 
 // Query for comments on a Post. See the following URL for possible options.
 // https://developer.wordpress.com/docs/api/1/get/sites/%24site/posts/%24post_ID/replies/
