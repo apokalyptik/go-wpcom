@@ -1,10 +1,10 @@
 package wpcom
 
-// The structure for a response to a query for multiple likes
+// The structure for a response to a query for multiple post likes
 type Likes struct {
-	Found    int    `mapstructure:"found"`
-	Comments []Like `mapstructure:"likes"`
-	I_Like   bool   `mapstructure:"i_like"`
+	Found  int    `mapstructure:"found"`
+	Likes  []Like `mapstructure:"likes"`
+	I_Like bool   `mapstructure:"i_like"`
 }
 
 type Like struct {
