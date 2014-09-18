@@ -87,3 +87,16 @@ func (p *Post) Comments(o *Options) (comments *Comments, err error) {
 	err = p.client.read(js, comments)
 	return
 }
+
+// Query for likes on a Post. See the following URL for possible options.
+// https://developer.wordpress.com/docs/api/1/get/sites/%24site/posts/%24post_ID/likes/
+func (p *Post) Likes(o *Options) (likes *Likes, err error) {
+	likes = new(Likes)
+	prefix := fmt.Sprintf("sites/%d/posts/%d/likes/", p.SiteId, p.ID)
+	js, err := p.client.fetch(prefix, o, O())
+	if err != nil {
+		return
+	}
+	err = p.client.read(js, likes)
+	return
+}
