@@ -88,7 +88,7 @@ func (p *Post) Comments(o *Options) (comments *Comments, err error) {
 	return
 }
 
-// Query for likes on a Post. See the following URL for possible options.
+// Likes query on a Post. See the following URL for possible options.
 // https://developer.wordpress.com/docs/api/1/get/sites/%24site/posts/%24post_ID/likes/
 func (p *Post) Likes(o *Options) (likes *Likes, err error) {
 	likes = new(Likes)
